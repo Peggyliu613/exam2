@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Handy Helper</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <h1 class="header">Hello {{user.first_name}}!</h1>
+    <a href="/logout">Log Out</a>
+    <div class="container">
+        <p>Everyone's job:</p>
+        <table class="table table-bordered">
+            <tr>
+                <th>Job</th>
+                <th>Location</th>
+                <th>Actions</th>
+            </tr>
+            {% for job in all_jobs %}
+            {% if job not in user.jobs_added.all %}
+            <tr>
+                <td>{{job.title}}</td>
+                <td>{{job.location}}</td>
+                <td><a href="/job_info/{{job.id}}">View</a> {% if user.email == job.uploaded_by.email %}| <a
+                        href="/delete/{{job.id}}">Remove</a>{% endif %} {% if user.email == job.uploaded_by.email %}| <a
+                        href="/edit_jobs_page/{{job.id}}">Edit</a>{% endif %} | <a href="/add_to_myjob/{{job.id}}">Add</a></td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+        <a href="/add_jobs_page">New Jobs!</a>
+        <br><br><br>
+        <p>{{user.first_name}}'s jobs:</p>
+        <table class="table table-bordered">
+            <tr>
+                <th>Job</th>
+                <th>Action</th>
+            </tr>
+            {% for job in user.jobs_added.all %}
+            <tr>
+                <td>{{job.title}}</td>
+                <td><a href="/job_info/{{job.id}}">View</a> | <a href="/delete/{{job.id}}">Done</a> | <a href="/remove_from_myjob/{{job.id}}">Give up</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+
+</html>

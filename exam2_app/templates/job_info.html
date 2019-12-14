@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Handy Helper</title>
+</head>
+<body>
+    <h1>Hello {{user.first_name}}! These are the job details!</h1>
+    <a href="/dashboard">Dashboard</a> | <a href="/logout">Log Out</a>
+
+    <h4>{{the_job.title}}</h4>
+    <p>{{the_job.desc}}</p>
+    <p>Location: {{the_job.location}}</p>
+    <p>Posted by: {{the_job.uploaded_by.first_name}} {{the_job.uploaded_by.last_name}}</p>
+    <p>Posted on: {{the_job.created_at | date:'M d, Y'}}</p>
+
+    <p style="color: purple;">Category: {{the_job.category}}</p>
+    {% if user not in the_job.added_by.all %}
+    <a href="/add_to_myjob/{{the_job.id}}">Add to my jobs</a>
+    {% else %}
+    <a href="/remove_from_myjob/{{the_job.id}}">Give up</a>
+    {% endif %}
+</body>
+</html>
